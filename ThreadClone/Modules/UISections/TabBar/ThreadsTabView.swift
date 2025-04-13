@@ -11,30 +11,34 @@ struct ThreadsTabView: View {
     @State private var selectedTab : Int = 0
     var body: some View {
         TabView(selection : $selectedTab) {
-            FeedView()
-                .tabItem {
-                    Image(systemName: "house")
-                        .environment(\.symbolVariants, selectedTab == 0 ? .fill : .none)
-                }
-                .tag(0)
-                .onAppear {
-                    selectedTab = 0
-                }
-            Text("Search")
-                .tabItem {
-                    Image(systemName: "magnifyingglass")
-                }
-                .tag(1)
-                .onAppear {
-                    selectedTab = 1
-                }
+            NavigationStack {
+                FeedView()
+            }
+            .tabItem {
+                Image(systemName: "house")
+                    .environment(\.symbolVariants, selectedTab == 0 ? .fill : .none)
+            }
+            .tag(0)
+            .onAppear {
+                
+            }
+            NavigationStack {
+                ExploreView()
+            }
+            .tabItem {
+                Image(systemName: "magnifyingglass")
+            }
+            .tag(1)
+            .onAppear {
+                
+            }
             Text("Plus")
                 .tabItem {
                     Image(systemName: "plus")
                 }
                 .tag(2)
                 .onAppear {
-                    selectedTab = 2
+                    
                 }
             Text("Heart")
                 .tabItem {
@@ -43,7 +47,7 @@ struct ThreadsTabView: View {
                 }
                 .tag(3)
                 .onAppear {
-                    selectedTab = 3
+                    
                 }
             Text("Profile")
                 .tabItem {
@@ -52,7 +56,7 @@ struct ThreadsTabView: View {
                 }
                 .tag(4)
                 .onAppear {
-                    selectedTab = 4
+                    
                 }
         }
         .tint(.black)

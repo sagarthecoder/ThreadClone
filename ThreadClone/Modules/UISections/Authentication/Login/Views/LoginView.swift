@@ -10,6 +10,7 @@ import SwiftUI
 struct LoginView: View {
     @State private var email: String = ""
     @State private var password: String = ""
+    @Binding var isLoggedIn: Bool
     var body: some View {
         NavigationStack {
             VStack {
@@ -39,9 +40,8 @@ struct LoginView: View {
                         .frame(maxWidth: .infinity, alignment: .trailing)
                 }
                 
-                NavigationLink {
-                    ThreadsTabView()
-                        .navigationBarBackButtonHidden(true)
+                Button {
+                    isLoggedIn = true
                 } label: {
                     Text("Login")
                         .font(.headline)
@@ -79,5 +79,6 @@ struct LoginView: View {
 }
 
 #Preview {
-    LoginView()
+    @State var isLoggedIn = false
+    return LoginView(isLoggedIn: $isLoggedIn)
 }

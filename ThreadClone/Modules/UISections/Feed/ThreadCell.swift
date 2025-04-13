@@ -12,11 +12,7 @@ struct ThreadCell: View {
         NavigationStack {
             VStack {
                 HStack {
-                    Image("messi")
-                        .resizable()
-                        .scaledToFill()
-                        .frame(width: 50, height: 50)
-                        .clipShape(.circle)
+                    CircularImageView(imageName: "messi")
                     
                     VStack(alignment : .leading, spacing : 4) {
                         HStack {
