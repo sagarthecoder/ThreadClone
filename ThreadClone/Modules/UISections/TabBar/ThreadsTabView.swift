@@ -49,9 +49,11 @@ struct ThreadsTabView: View {
                 .onAppear {
                     
                 }
-            Text("Profile")
-                .tabItem {
-                    Image(systemName: "person")
+            NavigationStack {
+                ProfileView()
+            }
+            .tabItem {
+                Image(systemName: "person")
                         .environment(\.symbolVariants, selectedTab == 4 ? .fill : .none)
                 }
                 .tag(4)
