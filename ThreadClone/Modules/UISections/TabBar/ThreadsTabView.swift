@@ -9,6 +9,8 @@ import SwiftUI
 
 struct ThreadsTabView: View {
     @State private var selectedTab : Int = 0
+    @State private var isShowCreateThread : Bool = false
+    @State private var previousTab = 0
     var body: some View {
         TabView(selection : $selectedTab) {
             NavigationStack {
@@ -32,13 +34,13 @@ struct ThreadsTabView: View {
             .onAppear {
                 
             }
-            Text("Plus")
+            Color.clear
                 .tabItem {
                     Image(systemName: "plus")
                 }
                 .tag(2)
                 .onAppear {
-                    
+                    selectedTab = previousTab
                 }
             Text("Heart")
                 .tabItem {
@@ -62,6 +64,17 @@ struct ThreadsTabView: View {
                 }
         }
         .tint(.black)
+        .onChange(of: selectedTab, { oldValue, newValue in
+            if newValue == 2 {
+                isShowCreateThread = true
+                previousTab = oldValue
+            }
+        })
+        .sheet(isPresented: $isShowCreateThread, onDismiss: {
+            selectedTab = previousTab
+        }) {
+            CreateThreadView()
+        }
     }
 }
 
