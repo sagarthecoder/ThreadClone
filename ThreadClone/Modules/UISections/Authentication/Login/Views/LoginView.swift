@@ -21,17 +21,12 @@ struct LoginView: View {
                 TextField(text: $email) {
                     Text("Email")
                 }
-                .padding(12)
-                .background(Color(.systemGray6))
-                .cornerRadius(8)
-                .padding(.horizontal, 10)
+                .autocapitalization(.none)
+                .modifier(TextFiledModifier())
                 SecureField(text: $password) {
                     Text("Password")
                 }
-                .padding(12)
-                .background(Color(.systemGray6))
-                .cornerRadius(8)
-                .padding(.horizontal, 10)
+                .modifier(TextFiledModifier())
                 NavigationLink{
                     Text("")
                 } label : {
@@ -44,8 +39,9 @@ struct LoginView: View {
                         .frame(maxWidth: .infinity, alignment: .trailing)
                 }
                 
-                Button {
-                    
+                NavigationLink {
+                    ThreadsTabView()
+                        .navigationBarBackButtonHidden(true)
                 } label: {
                     Text("Login")
                         .font(.headline)
@@ -61,7 +57,8 @@ struct LoginView: View {
                 
                 Divider()
                 NavigationLink {
-                    Text("")
+                    RegistrationView()
+                        .navigationBarBackButtonHidden(true)
                 } label: {
                     HStack(spacing : 4) {
                         Text("Don't have an account?")
