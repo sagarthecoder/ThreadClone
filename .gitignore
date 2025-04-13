@@ -1,0 +1,75 @@
+# Xcode
+#
+# gitignore contributors: remember to update Global/Xcode.gitignore, Objective-C.gitignore & Swift.gitignore
+
+## User settings
+xcuserdata/
+*.xcscmblueprint
+*.xccheckout
+
+## Derived data
+DerivedData/
+
+## Build artifacts
+build/
+
+## Xcode-specific files
+*.moved-aside
+*.pbxuser
+*.mode1v3
+*.mode2v3
+*.perspectivev3
+*.hmap
+
+## App packaging
+*.ipa
+*.dSYM.zip
+*.dSYM
+
+## Playgrounds
+timeline.xctimeline
+playground.xcworkspace
+
+# Swift Package Manager
+#
+# Add this line if you want to avoid checking in source code from Swift Package Manager dependencies.
+.Packages/
+.Package.pins
+.Package.resolved
+
+## Xcode project files
+*.xcodeproj/*
+!*.xcodeproj/project.pbxproj
+!*.xcodeproj/xcshareddata
+!*.xcodeproj/xcshareddata/*
+*.xcworkspace/
+!*.xcworkspace/contents.xcworkspacedata
+.swiftpm/
+.build/
+
+# CocoaPods
+#
+Pods/
+*Podfile.lock
+
+# Carthage
+#
+Carthage/Build/
+
+# Accio dependency management
+Dependencies/
+.accio/
+
+# fastlane
+#
+fastlane/report.xml
+fastlane/Preview.html
+fastlane/screenshots/**/*.png
+fastlane/test_output
+
+# Code Injection
+#
+iOSInjectionProject/
+
+# IDEs and other tools
+.idea/
