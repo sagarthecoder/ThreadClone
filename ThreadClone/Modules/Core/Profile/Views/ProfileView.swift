@@ -87,6 +87,21 @@ struct ProfileView: View {
             }
             .padding()
         }
+        .toolbar {
+            ToolbarItem(placement: .topBarTrailing) {
+                Button {
+                    Task {
+                        try? await AuthService.shared.logout()
+                    }
+                } label: {
+                    Text("Logout")
+                        .font(.footnote)
+                        .foregroundStyle(Color(.red))
+                        .fontWeight(.semibold)
+                }
+
+            }
+        }
     }
     
     private func showThreads()-> some View {

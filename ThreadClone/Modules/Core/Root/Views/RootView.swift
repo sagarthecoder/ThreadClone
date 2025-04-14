@@ -8,12 +8,15 @@ import SwiftUI
 
 struct RootView: View {
     @State private var isLoggedIn = false
+    @StateObject private var viewModel = RootViewModel()
     
     var body: some View {
-        if isLoggedIn {
-            ThreadsTabView()
-        } else {
-            LoginView(isLoggedIn: $isLoggedIn)
+        Group {
+            if viewModel.userSession != nil {
+                ThreadsTabView()
+            } else {
+                LoginView()
+            }
         }
     }
 }

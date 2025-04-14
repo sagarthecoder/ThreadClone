@@ -8,9 +8,8 @@
 import SwiftUI
 
 struct LoginView: View {
-    @State private var email: String = ""
-    @State private var password: String = ""
-    @Binding var isLoggedIn: Bool
+    @StateObject private var viewModel = LoginViewModel()
+    
     var body: some View {
         NavigationStack {
             VStack {
@@ -19,12 +18,12 @@ struct LoginView: View {
                     .resizable()
                     .frame(width: 100, height: 100)
                     .padding()
-                TextField(text: $email) {
+                TextField(text: $viewModel.email) {
                     Text("Email")
                 }
                 .autocapitalization(.none)
                 .modifier(TextFiledModifier())
-                SecureField(text: $password) {
+                SecureField(text: $viewModel.password) {
                     Text("Password")
                 }
                 .modifier(TextFiledModifier())
@@ -41,7 +40,7 @@ struct LoginView: View {
                 }
                 
                 Button {
-                    isLoggedIn = true
+                    viewModel.login()
                 } label: {
                     Text("Login")
                         .font(.headline)
@@ -74,11 +73,28 @@ struct LoginView: View {
                     
                 }
             }
+            .alert("Error!", isPresented: Binding<Bool>(
+                get: {
+                    !viewModel.errorMessage.isEmpty
+                },
+                set: { newValue in
+                    if !newValue {
+                        viewModel.errorMessage = ""
+                    }
+                }
+            )) {
+                Button("Ok", role: .cancel) {
+                    viewModel.errorMessage = ""
+                }
+            } message: {
+                Text(viewModel.errorMessage)
+                    .foregroundStyle(.black)
+                    .fontWeight(.regular)
+            }
         }
     }
 }
 
 #Preview {
-    @State var isLoggedIn = false
-    return LoginView(isLoggedIn: $isLoggedIn)
+    return LoginView()
 }

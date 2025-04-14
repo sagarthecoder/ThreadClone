@@ -21,7 +21,9 @@ class RegistrationViewModel : ObservableObject {
                 print("Debug : Created New User = \(Auth.auth().currentUser?.uid ?? "N/A")")
                 
             } catch let error {
-                self.errorMessage = error.localizedDescription
+                DispatchQueue.main.async { [weak self] in
+                    self?.errorMessage = error.localizedDescription
+                }
             }
         }
     }
