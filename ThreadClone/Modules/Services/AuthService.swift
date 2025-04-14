@@ -18,6 +18,7 @@ class AuthService {
     func signup(email: String, password: String, fullName : String, username : String) async throws {
         let session = try await Auth.auth().createUser(withEmail: email, password: password)
         userSession = Auth.auth().currentUser
+        UserService.shared.fetchCurrentUser()
         try await uploadUserData(id: session.user.uid, email: email, fullName: fullName, username: username)
         
     }
@@ -25,11 +26,13 @@ class AuthService {
     func login(email: String, password: String) async throws {
         try await Auth.auth().signIn(withEmail: email, password: password)
         userSession = Auth.auth().currentUser
+        UserService.shared.fetchCurrentUser()
     }
     
     func logout() async throws {
         try Auth.auth().signOut()
         userSession = nil
+        await UserService.shared.reset()
     }
     
     func uploadUserData(id : String, email: String, fullName : String, username : String) async throws {

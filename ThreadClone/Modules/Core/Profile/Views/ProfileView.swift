@@ -22,7 +22,7 @@ struct ProfileView: View {
             ScrollView(showsIndicators : false) {
                 VStack(alignment : .leading, spacing : 10) {
                     VStack(alignment : .leading, spacing : 2) {
-                        HStack {
+                        HStack(alignment : .top) {
                             Text(viewModel.user?.fullName ?? "N/A")
                                 .font(.title2)
                                 .fontWeight(.bold)
@@ -34,16 +34,14 @@ struct ProfileView: View {
                             .font(.footnote)
                     }
                     
-                    VStack(alignment : .leading, spacing: 6) {
-                        if let bio = viewModel.user?.bio {
-                            Text(bio)
-                                .font(.footnote)
-                        }
-                        
-                        Text("2 Followers")
-                            .font(.caption)
-                            .foregroundStyle(Color(.systemGray3))
+                    if let bio = viewModel.user?.bio {
+                        Text(bio)
+                            .font(.footnote)
                     }
+                    
+                    Text("2 Followers")
+                        .font(.caption)
+                        .foregroundStyle(Color(.systemGray3))
                     
                     Button {
                         
@@ -95,6 +93,7 @@ struct ProfileView: View {
                 Button {
                     Task {
                         try? await AuthService.shared.logout()
+                        UserService.shared.reset()
                     }
                 } label: {
                     Text("Logout")
@@ -102,7 +101,7 @@ struct ProfileView: View {
                         .foregroundStyle(Color(.red))
                         .fontWeight(.semibold)
                 }
-
+                
             }
         }
     }
