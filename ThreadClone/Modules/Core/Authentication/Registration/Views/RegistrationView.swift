@@ -8,10 +8,7 @@
 import SwiftUI
 
 struct RegistrationView: View {
-    @State private var email: String = ""
-    @State private var password: String = ""
-    @State private var fullName: String = ""
-    @State private var username: String = ""
+    @StateObject private var viewModel = RegistrationViewModel()
     @Environment(\.dismiss) var dismiss
     
     var body: some View {
@@ -21,28 +18,28 @@ struct RegistrationView: View {
                 .resizable()
                 .frame(width: 100, height: 100)
                 .padding()
-            TextField(text: $email) {
+            TextField(text: $viewModel.email) {
                 Text("Enter your email")
             }
             .autocapitalization(.none)
             .modifier(TextFiledModifier())
-            SecureField(text: $password) {
+            SecureField(text: $viewModel.password) {
                 Text("Enter your password")
             }
             .modifier(TextFiledModifier())
             
-            TextField(text: $fullName) {
+            TextField(text: $viewModel.fullName) {
                 Text("Enter your full name")
             }
             .modifier(TextFiledModifier())
             
-            TextField(text: $username) {
+            TextField(text: $viewModel.username) {
                 Text("Enter your username")
             }
             .modifier(TextFiledModifier())
             
             Button {
-                
+                viewModel.createNewUser()
             } label: {
                 Text("Sign up")
                     .font(.headline)
@@ -74,6 +71,24 @@ struct RegistrationView: View {
             }
             .padding(.top, 8)
             
+        }
+        .alert("Error!", isPresented: Binding<Bool>(
+            get: {
+                !viewModel.errorMessage.isEmpty
+            },
+            set: { newValue in
+                if !newValue {
+                    viewModel.errorMessage = ""
+                }
+            }
+        )) {
+            Button("Ok", role: .cancel) {
+                viewModel.errorMessage = ""
+            }
+        } message: {
+            Text(viewModel.errorMessage)
+                .foregroundStyle(.black)
+                .fontWeight(.regular)
         }
     }
 }
