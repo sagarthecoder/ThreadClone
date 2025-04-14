@@ -52,7 +52,7 @@ struct ThreadsTabView: View {
                     
                 }
             NavigationStack {
-                ProfileView()
+                CurrentUserProfileView()
             }
             .tabItem {
                 Image(systemName: "person")

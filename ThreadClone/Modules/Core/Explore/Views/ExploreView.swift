@@ -16,9 +16,15 @@ struct ExploreView: View {
                 ScrollView(showsIndicators: false) {
                     LazyVStack {
                         ForEach(viewModel.users) { user in
-                            UserCell(user: user)
-                                .padding(.vertical, 10)
-                            Divider()
+                            
+                            NavigationLink {
+                                ProfileView(user: user)
+                            } label : {
+                                UserCell(user: user)
+                                    .padding(.vertical, 10)
+                                Divider()
+                            }
+                            
                         }
                     }
                     .padding()

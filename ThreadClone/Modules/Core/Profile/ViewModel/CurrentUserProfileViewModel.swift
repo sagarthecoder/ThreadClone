@@ -7,7 +7,7 @@
 import Combine
 import Foundation
 
-class ProfileViewModel : ObservableObject {
+class CurrentUserProfileViewModel : ObservableObject {
     @Published var user: User?
     var cancellables: Set<AnyCancellable> = []
     

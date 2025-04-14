@@ -14,96 +14,82 @@ struct ProfileView: View {
         return UIScreen.main.bounds.width / count - 16
     }
     @State var selectedFilter = ProfileThreadFilter.threads
-    @StateObject var viewModel = ProfileViewModel()
+    var user : User?
+    init(user : User?) {
+        self.user = user
+    }
     @Namespace var animation
     
     var body: some View {
-        NavigationStack {
-            ScrollView(showsIndicators : false) {
-                VStack(alignment : .leading, spacing : 10) {
-                    VStack(alignment : .leading, spacing : 2) {
-                        HStack(alignment : .top) {
-                            Text(viewModel.user?.fullName ?? "N/A")
-                                .font(.title2)
-                                .fontWeight(.bold)
-                            Spacer()
-                            CircularImageView()
-                        }
-                        
-                        Text(viewModel.user?.username ?? "N/A")
-                            .font(.footnote)
+        ScrollView(showsIndicators : false) {
+            VStack(alignment : .leading, spacing : 10) {
+                VStack(alignment : .leading, spacing : 2) {
+                    HStack(alignment : .top) {
+                        Text(user?.fullName ?? "N/A")
+                            .font(.title2)
+                            .fontWeight(.bold)
+                        Spacer()
+                        CircularImageView()
                     }
                     
-                    if let bio = viewModel.user?.bio {
-                        Text(bio)
-                            .font(.footnote)
-                    }
-                    
-                    Text("2 Followers")
-                        .font(.caption)
-                        .foregroundStyle(Color(.systemGray3))
-                    
-                    Button {
-                        
-                    } label: {
-                        Text("Follow")
-                            .foregroundStyle(.white)
-                    }
-                    .frame(width: UIScreen.main.bounds.width - 40, height: 40)
-                    .background(Color(.darkText))
-                    .cornerRadius(8)
-                    
-                    HStack {
-                        
-                        ForEach(ProfileThreadFilter.allCases) { filter in
-                            VStack {
-                                Text(filter.title)
-                                    .font(.subheadline)
-                                    .fontWeight(filter == selectedFilter ? .semibold : .regular)
-                                if filter == selectedFilter {
-                                    Capsule()
-                                        .frame(width : profileFilterWidth, height : 1.5)
-                                        .foregroundStyle(.black)
-                                        .matchedGeometryEffect(id: "underline", in: animation)
-                                } else {
-                                    Color.clear
-                                        .frame(width : profileFilterWidth, height : 1.5)
-                                }
-                                
-                            }
-                            .onTapGesture {
-                                withAnimation(.spring()) {
-                                    selectedFilter = filter
-                                }
-                            }
-                        }
-                        
-                    }
-                    .padding(.top, 8)
-                    
-                    if selectedFilter == .threads {
-                        showThreads()
-                    }
-                }
-            }
-            .padding()
-        }
-        .toolbar {
-            ToolbarItem(placement: .topBarTrailing) {
-                Button {
-                    Task {
-                        try? await AuthService.shared.logout()
-                        UserService.shared.reset()
-                    }
-                } label: {
-                    Text("Logout")
+                    Text(user?.username ?? "N/A")
                         .font(.footnote)
-                        .foregroundStyle(Color(.red))
-                        .fontWeight(.semibold)
                 }
                 
+                if let bio = user?.bio {
+                    Text(bio)
+                        .font(.footnote)
+                }
+                
+                Text("2 Followers")
+                    .font(.caption)
+                    .foregroundStyle(Color(.systemGray3))
+                
+                Button {
+                    
+                } label: {
+                    Text("Follow")
+                        .foregroundStyle(.white)
+                }
+                .frame(width: UIScreen.main.bounds.width - 40, height: 40)
+                .background(Color(.darkText))
+                .cornerRadius(8)
+                
+                HStack {
+                    
+                    ForEach(ProfileThreadFilter.allCases) { filter in
+                        VStack {
+                            Text(filter.title)
+                                .font(.subheadline)
+                                .fontWeight(filter == selectedFilter ? .semibold : .regular)
+                            if filter == selectedFilter {
+                                Capsule()
+                                    .frame(width : profileFilterWidth, height : 1.5)
+                                    .foregroundStyle(.black)
+                                    .matchedGeometryEffect(id: "underline", in: animation)
+                            } else {
+                                Color.clear
+                                    .frame(width : profileFilterWidth, height : 1.5)
+                            }
+                            
+                        }
+                        .onTapGesture {
+                            withAnimation(.spring()) {
+                                selectedFilter = filter
+                            }
+                        }
+                    }
+                    
+                }
+                .padding(.top, 8)
+                
+                if selectedFilter == .threads {
+                    showThreads()
+                }
             }
         }
+        .padding()
+        
     }
     
     private func showThreads()-> some View {
@@ -116,5 +102,6 @@ struct ProfileView: View {
 }
 
 #Preview {
-    ProfileView()
+    let dev = DeveloperPreviewProvider.shared
+    ProfileView(user: dev.user)
 }
