@@ -17,7 +17,7 @@ class RegistrationViewModel : ObservableObject {
     func createNewUser() {
         Task {
             do {
-                try await AuthService.shared.signup(email: email, password: password)
+                try await AuthService.shared.signup(email: email, password: password, fullName: fullName, username: username)
                 print("Debug : Created New User = \(Auth.auth().currentUser?.uid ?? "N/A")")
                 
             } catch let error {

@@ -27,16 +27,20 @@ struct LoginView: View {
                     Text("Password")
                 }
                 .modifier(TextFiledModifier())
-                NavigationLink{
-                    Text("")
-                } label : {
-                    Text("Forgot Password?")
-                        .font(.footnote)
-                        .fontWeight(.semibold)
-                        .foregroundStyle(.black)
-                        .padding(.vertical)
-                        .padding(.trailing, 14)
-                        .frame(maxWidth: .infinity, alignment: .trailing)
+                
+                HStack {
+                    Spacer()
+                    NavigationLink{
+                        Text("")
+                    } label : {
+                        Text("Forgot Password?")
+                            .font(.footnote)
+                            .fontWeight(.semibold)
+                            //.frame(maxWidth: .infinity, alignment: .trailing)
+                            .foregroundStyle(.black)
+                            .padding(.vertical)
+                            .padding(.trailing, 14)
+                    }
                 }
                 
                 Button {
@@ -96,5 +100,7 @@ struct LoginView: View {
 }
 
 #Preview {
-    return LoginView()
+    NavigationStack {
+        LoginView()
+    }
 }
