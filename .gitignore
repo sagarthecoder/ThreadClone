@@ -7,6 +7,10 @@ xcuserdata/
 *.xcscmblueprint
 *.xccheckout
 
+## Firebase
+GoogleService-Info.plist
+
+
 ## Derived data
 DerivedData/
 

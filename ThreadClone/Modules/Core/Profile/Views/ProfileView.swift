@@ -14,6 +14,7 @@ struct ProfileView: View {
         return UIScreen.main.bounds.width / count - 16
     }
     @State var selectedFilter = ProfileThreadFilter.threads
+    @StateObject var viewModel = ProfileViewModel()
     @Namespace var animation
     
     var body: some View {
@@ -22,20 +23,22 @@ struct ProfileView: View {
                 VStack(alignment : .leading, spacing : 10) {
                     VStack(alignment : .leading, spacing : 2) {
                         HStack {
-                            Text("Leonel Messi")
+                            Text(viewModel.user?.fullName ?? "N/A")
                                 .font(.title2)
                                 .fontWeight(.bold)
                             Spacer()
                             CircularImageView()
                         }
                         
-                        Text("messiTheCoder")
+                        Text(viewModel.user?.username ?? "N/A")
                             .font(.footnote)
                     }
                     
                     VStack(alignment : .leading, spacing: 6) {
-                        Text("Formula 1 . See you next for mind")
-                            .font(.footnote)
+                        if let bio = viewModel.user?.bio {
+                            Text(bio)
+                                .font(.footnote)
+                        }
                         
                         Text("2 Followers")
                             .font(.caption)
