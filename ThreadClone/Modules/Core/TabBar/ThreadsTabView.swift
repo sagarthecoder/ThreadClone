@@ -11,6 +11,10 @@ struct ThreadsTabView: View {
     @State private var selectedTab : Int = 0
     @State private var isShowCreateThread : Bool = false
     @State private var previousTab = 0
+    
+    var currentUser : User? {
+        return UserService.shared.currentUser
+    }
     var body: some View {
         TabView(selection : $selectedTab) {
             NavigationStack {
@@ -73,7 +77,7 @@ struct ThreadsTabView: View {
         .sheet(isPresented: $isShowCreateThread, onDismiss: {
             selectedTab = previousTab
         }) {
-            CreateThreadView()
+            CreateThreadView(user : currentUser)
         }
     }
 }

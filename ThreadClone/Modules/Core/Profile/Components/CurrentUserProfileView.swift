@@ -8,77 +8,31 @@
 import SwiftUI
 
 struct CurrentUserProfileView: View {
-    var profileFilterWidth : CGFloat  {
-        let count = CGFloat(max(1, ProfileThreadFilter.allCases.count))
-        return UIScreen.main.bounds.width / count - 16
-    }
     @State var selectedFilter = ProfileThreadFilter.threads
     @StateObject var viewModel = CurrentUserProfileViewModel()
-    @Namespace var animation
-    
+    @State var showEditProfileView : Bool = false
     var body: some View {
         NavigationStack {
             ScrollView(showsIndicators : false) {
                 VStack(alignment : .leading, spacing : 10) {
-                    VStack(alignment : .leading, spacing : 2) {
-                        HStack(alignment : .top) {
-                            Text(viewModel.user?.fullName ?? "N/A")
-                                .font(.title2)
-                                .fontWeight(.bold)
-                            Spacer()
-                            CircularImageView()
-                        }
-                        
-                        Text(viewModel.user?.username ?? "N/A")
-                            .font(.footnote)
-                    }
-                    
-                    if let bio = viewModel.user?.bio {
-                        Text(bio)
-                            .font(.footnote)
-                    }
-                    
-                    Text("2 Followers")
-                        .font(.caption)
-                        .foregroundStyle(Color(.systemGray3))
+                    ProfileHeaderView(user: viewModel.user)
                     
                     Button {
-                        
+                        showEditProfileView.toggle()
                     } label: {
-                        Text("Follow")
-                            .foregroundStyle(.white)
+                        Text("Edit Profile")
+                            .font(.subheadline)
+                            .fontWeight(.semibold)
+                            .foregroundStyle(.black)
                     }
                     .frame(width: UIScreen.main.bounds.width - 40, height: 40)
-                    .background(Color(.darkText))
-                    .cornerRadius(8)
-                    
-                    HStack {
-                        
-                        ForEach(ProfileThreadFilter.allCases) { filter in
-                            VStack {
-                                Text(filter.title)
-                                    .font(.subheadline)
-                                    .fontWeight(filter == selectedFilter ? .semibold : .regular)
-                                if filter == selectedFilter {
-                                    Capsule()
-                                        .frame(width : profileFilterWidth, height : 1.5)
-                                        .foregroundStyle(.black)
-                                        .matchedGeometryEffect(id: "underline", in: animation)
-                                } else {
-                                    Color.clear
-                                        .frame(width : profileFilterWidth, height : 1.5)
-                                }
-                                
-                            }
-                            .onTapGesture {
-                                withAnimation(.spring()) {
-                                    selectedFilter = filter
-                                }
-                            }
-                        }
-                        
+                    .background(Color(.white))
+                    .overlay {
+                        RoundedRectangle(cornerRadius: 10)
+                            .stroke(Color(.systemGray3), lineWidth: 2)
                     }
-                    .padding(.top, 8)
+                    
+                    UserContentListView(selectedFilter: $selectedFilter)
                     
                     if selectedFilter == .threads {
                         showThreads()
@@ -86,6 +40,12 @@ struct CurrentUserProfileView: View {
                 }
             }
             .padding()
+            .sheet(isPresented: $showEditProfileView) {
+                NavigationStack {
+                    EditProfileView()
+                        .environmentObject(viewModel)
+                }
+            }
         }
         .toolbar {
             ToolbarItem(placement: .topBarTrailing) {
@@ -108,7 +68,7 @@ struct CurrentUserProfileView: View {
     private func showThreads()-> some View {
         LazyVStack {
             ForEach(0..<100, id : \.self) { thread in
-                ThreadCell()
+                ThreadCell(thread: DeveloperPreviewProvider.shared.thread)
             }
         }
     }
