@@ -14,6 +14,7 @@ class CurrentUserProfileViewModel : ObservableObject {
     @Published var user: User?
     var cancellables: Set<AnyCancellable> = []
     @Published var profileImage : Image?
+    @Published var threads : [Thread] = []
     @Published var selectedItem : PhotosPickerItem? {
         didSet {
             loadImage()
@@ -29,8 +30,24 @@ class CurrentUserProfileViewModel : ObservableObject {
             .receive(on: DispatchQueue.main)
             .sink { [weak self] user in
                 self?.user = user
+                self?.loadThreads()
             }
             .store(in: &cancellables)
+    }
+    
+    func loadThreads() {
+        if let uid = user?.id {
+            Task {
+                do {
+                    self.threads = try await ThreadService.shared.getUserThreads(userId: uid)
+                    for i in 0..<self.threads.count {
+                        self.threads[i].user = user
+                    }
+                } catch {
+                    print(error.localizedDescription)
+                }
+            }
+        }
     }
     
     private func loadImage() {

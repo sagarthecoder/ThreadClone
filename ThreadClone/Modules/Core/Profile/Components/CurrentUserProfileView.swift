@@ -67,8 +67,8 @@ struct CurrentUserProfileView: View {
     
     private func showThreads()-> some View {
         LazyVStack {
-            ForEach(0..<100, id : \.self) { thread in
-                ThreadCell(thread: DeveloperPreviewProvider.shared.thread)
+            ForEach(viewModel.threads) { thread in
+                ThreadCell(thread: thread)
             }
         }
     }

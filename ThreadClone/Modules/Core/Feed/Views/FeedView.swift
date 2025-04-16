@@ -15,7 +15,11 @@ struct FeedView: View {
             ScrollView(showsIndicators : false) {
                 LazyVStack {
                     ForEach(viewModel.threads) { thread in
-                        ThreadCell(thread: thread)
+                        NavigationLink {
+                            ProfileView(user: thread.user)
+                        } label: {
+                            ThreadCell(thread: thread)
+                        }
                     }
                 }
             }

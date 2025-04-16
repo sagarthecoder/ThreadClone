@@ -11,7 +11,7 @@ struct ProfileView: View {
    
     @State var selectedFilter = ProfileThreadFilter.threads
     var user : User?
-    
+    @StateObject var viewModel = ProfileViewModel()
     init(user : User?) {
         self.user = user
     }
@@ -38,14 +38,17 @@ struct ProfileView: View {
             }
         }
         .padding(.horizontal)
-        .navigationBarTitleDisplayMode(.inline)
-        
+        .onAppear {
+            if let uid = user?.id {
+                viewModel.loadThreads(uid: uid)
+            }
+        }
     }
     
     private func showThreads()-> some View {
         LazyVStack {
-            ForEach(0..<100, id : \.self) { _ in
-                ThreadCell(thread: DeveloperPreviewProvider.shared.thread)
+            ForEach(viewModel.threads) { thread in
+                ThreadCell(thread: thread)
             }
         }
     }
